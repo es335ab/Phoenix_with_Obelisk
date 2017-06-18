@@ -1,5 +1,6 @@
 <div id="page">
   <%= @frontmatter.title %>
+  <%= @frontmatter.img %>
   <hr />
   <%= @content %>
 </div>
