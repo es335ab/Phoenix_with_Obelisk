@@ -1,0 +1,2 @@
+defmodule Static do
+end
