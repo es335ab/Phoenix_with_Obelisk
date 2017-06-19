@@ -24,3 +24,7 @@ erl_crash.dump
 /config/prod.secret.exs
 
 /static/build
+/web/static/javascripts
+/web/static/stylesheets
+/web/static/images
+.DS_Store
