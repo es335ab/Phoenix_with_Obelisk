@@ -5,6 +5,7 @@ import runSequence from 'run-sequence';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import spritesmith from 'gulp.spritesmith';
 import merge from 'merge-stream';
+import del from 'del';
 const $ = gulpLoadPlugins();
 
 const webpackConfig = require('./webpack.config.babel');
@@ -22,7 +23,7 @@ gulp.task('sass', () => {
     .pipe(gulp.dest(`${DIST_BASE_PATH}/stylesheets`));
 });
 
-// TODO: add serve tasks  => shell:obelisk, eslint, copy, clean
+// TODO: add serve tasks  => shell:obelisk, eslint
 // TODO: add dist tasks  => autoprefixer, imagemin, rename:js, rename:css
 
 gulp.task('webpack', () => {
@@ -54,8 +55,17 @@ gulp.task('copy', () => {
     .pipe(gulp.dest(`${DIST_BASE_PATH}/images`));
 });
 
+gulp.task('clean', del.bind(null, [
+  `${DIST_BASE_PATH}/images`,
+  `${DIST_BASE_PATH}/stylesheets`,
+  `${DIST_BASE_PATH}/javascripts`
+]));
+
 gulp.task('build', (callback) => {
   runSequence(
+    'clean',
+    'copy',
+    'sprite',
     'sass',
     'webpack',
     // 'shell:obelisk',
@@ -66,6 +76,7 @@ gulp.task('build', (callback) => {
 gulp.task('watch', () => {
   gulp.watch(`${FRONTEND_ASSETS_PATH}/javascripts/**/*`, { interval: 500 }, ['webpack']); // eslint
   gulp.watch(`${FRONTEND_ASSETS_PATH}/stylesheets/**/*.scss`, { interval:500 }, ['sass']);
+  gulp.watch(`${FRONTEND_ASSETS_PATH}/images/**/*`, { interval:500 }, ['copy']);
   // gulp.watch(`${MOCK_PATH}/pages/**/*`, `${MOCK_PATH}/posts/**/*`, `${MOCK_PATH}/themes/**/*`, { interval:500 }, ['shell:obelisk']);
   // sprite
   // copy
