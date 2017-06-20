@@ -3,6 +3,8 @@ import webpackStream from 'webpack-stream';
 import webpack from 'webpack';
 import runSequence from 'run-sequence';
 import gulpLoadPlugins from 'gulp-load-plugins';
+import spritesmith from 'gulp.spritesmith';
+import merge from 'merge-stream';
 const $ = gulpLoadPlugins();
 
 const webpackConfig = require('./webpack.config.babel');
@@ -28,10 +30,26 @@ gulp.task('webpack', () => {
     .pipe(gulp.dest(`${DIST_BASE_PATH}/javascripts`));
 });
 
+gulp.task('sprite', () => {
+  const spriteData = gulp.src(`${FRONTEND_ASSETS_PATH}/images/sprite/*.png`).pipe(spritesmith({
+    imgName : 'sprite.png',
+    cssName : '_sprite-data.scss',
+    imgPath : `/images/sprite.png`,
+    cssFormat : 'scss'
+  }));
+
+  console.log(`${DIST_BASE_PATH}/images`);
+
+  return merge(
+    spriteData.img.pipe(gulp.dest(`${DIST_BASE_PATH}/images`)),
+    spriteData.css.pipe(gulp.dest(`${FRONTEND_ASSETS_PATH}/stylesheets/var`))
+  );
+});
+
 gulp.task('build', (callback) => {
   runSequence(
     'sass',
-    'webpack',,
+    'webpack',
     // 'shell:obelisk',
     callback
   );

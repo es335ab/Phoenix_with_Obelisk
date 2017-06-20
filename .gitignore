@@ -28,3 +28,5 @@ erl_crash.dump
 /web/static/stylesheets
 /web/static/images
 .DS_Store
+
+frontend/stylesheets/var/_sprite-data.scss
