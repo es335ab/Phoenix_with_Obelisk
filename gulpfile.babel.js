@@ -22,7 +22,8 @@ gulp.task('sass', () => {
     .pipe(gulp.dest(`${DIST_BASE_PATH}/stylesheets`));
 });
 
-// TODO: add tasks => shell:obelisk, eslint, autoprefixer, sprite, copy, clean, imagemin, rename:js, rename:css
+// TODO: add serve tasks  => shell:obelisk, eslint, copy, clean
+// TODO: add dist tasks  => autoprefixer, imagemin, rename:js, rename:css
 
 gulp.task('webpack', () => {
   return webpackStream(webpackConfig, webpack)
@@ -36,14 +37,21 @@ gulp.task('sprite', () => {
     cssName : '_sprite-data.scss',
     imgPath : `/images/sprite.png`,
     cssFormat : 'scss'
+    // default engine is pixelsmith, a node-based spritesmith engine
   }));
-
-  console.log(`${DIST_BASE_PATH}/images`);
 
   return merge(
     spriteData.img.pipe(gulp.dest(`${DIST_BASE_PATH}/images`)),
     spriteData.css.pipe(gulp.dest(`${FRONTEND_ASSETS_PATH}/stylesheets/var`))
   );
+});
+
+gulp.task('copy', () => {
+  return gulp.src([
+      `${FRONTEND_ASSETS_PATH}/images/**/*`,
+      `!${FRONTEND_ASSETS_PATH}/images/sprite/*`
+    ])
+    .pipe(gulp.dest(`${DIST_BASE_PATH}/images`));
 });
 
 gulp.task('build', (callback) => {
