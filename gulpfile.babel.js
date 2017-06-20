@@ -76,10 +76,8 @@ gulp.task('build', (callback) => {
 gulp.task('watch', () => {
   gulp.watch(`${FRONTEND_ASSETS_PATH}/javascripts/**/*`, { interval: 500 }, ['webpack']); // eslint
   gulp.watch(`${FRONTEND_ASSETS_PATH}/stylesheets/**/*.scss`, { interval:500 }, ['sass']);
-  gulp.watch(`${FRONTEND_ASSETS_PATH}/images/**/*`, { interval:500 }, ['copy']);
+  gulp.watch(`${FRONTEND_ASSETS_PATH}/images/**/*`, { interval:500 }, ['copy', 'sprite']);
   // gulp.watch(`${MOCK_PATH}/pages/**/*`, `${MOCK_PATH}/posts/**/*`, `${MOCK_PATH}/themes/**/*`, { interval:500 }, ['shell:obelisk']);
-  // sprite
-  // copy
 });
 
 // client commands
@@ -92,5 +90,5 @@ gulp.task('serve:app', () => {
 });
 
 gulp.task('dist:app', () => {
-  // runSequence('build', 'watch', 'autoprefixer', imagemin, uglify, rename:js, rename:css);
+  // runSequence('build', 'autoprefixer', imagemin, uglify, rename:js, rename:css);
 });
