@@ -55,6 +55,8 @@ gulp.task('copy', () => {
     .pipe(gulp.dest(`${DIST_BASE_PATH}/images`));
 });
 
+gulp.task('shell:obelisk', $.shell.task('sh ./obelisk-build.sh'));
+
 gulp.task('clean', del.bind(null, [
   `${DIST_BASE_PATH}/images`,
   `${DIST_BASE_PATH}/stylesheets`,
@@ -68,7 +70,7 @@ gulp.task('build', (callback) => {
     'sprite',
     'sass',
     'webpack',
-    // 'shell:obelisk',
+    'shell:obelisk',
     callback
   );
 });
@@ -77,7 +79,7 @@ gulp.task('watch', () => {
   gulp.watch(`${FRONTEND_ASSETS_PATH}/javascripts/**/*`, { interval: 500 }, ['webpack']); // eslint
   gulp.watch(`${FRONTEND_ASSETS_PATH}/stylesheets/**/*.scss`, { interval:500 }, ['sass']);
   gulp.watch(`${FRONTEND_ASSETS_PATH}/images/**/*`, { interval:500 }, ['copy', 'sprite']);
-  // gulp.watch(`${MOCK_PATH}/pages/**/*`, `${MOCK_PATH}/posts/**/*`, `${MOCK_PATH}/themes/**/*`, { interval:500 }, ['shell:obelisk']);
+  gulp.watch([`${MOCK_PATH}/pages/**/*`, `${MOCK_PATH}/posts/**/*`, `${MOCK_PATH}/themes/**/*`], { interval:500 }, ['shell:obelisk']);
 });
 
 // client commands
