@@ -4,12 +4,12 @@ module.exports = {
   entry: './frontend/javascripts/app.js',
   output: {
     filename: 'app.js',
-    path: __dirname + '/static/build/javascripts'
+    path: __dirname + '/build/javascripts'
   },
   resolve: {
     extensions: ['.js', '.jsx'],
     modules: [
-      path.resolve('./frontend/javascripts/'),
+      path.resolve('./frontend/javascripts'),
       path.resolve('./node_modules')
     ]
   },

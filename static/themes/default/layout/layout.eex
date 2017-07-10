@@ -3,14 +3,15 @@
   <head>
     <title>This should be replaced by whats in site.yml</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <%= @css %>
-    <%= @js %>
+    <link rel="stylesheet" href="/stylesheets/all.css">
+
   </head>
 
   <body>
     <div class="container">
-      <h1>obelisk</h1>
+      <h1>obeliskaaaaaaaaaaaaaaaaaaaaq</h1>
       <%= @content %>
     </div>
+    <script src="/javascripts/app.js">
   </body>
 </html>

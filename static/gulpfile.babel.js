@@ -11,9 +11,10 @@ const $ = gulpLoadPlugins();
 const webpackConfig = require('./webpack.config.babel');
 
 // path
-const FRONTEND_ASSETS_PATH = './frontend'
-const DIST_BASE_PATH = process.argv[2].indexOf('static') > -1 ? './static/build' : './web/static';
-const MOCK_PATH = './static';
+const FRONTEND_ASSETS_PATH = './frontend';
+const isStaticEnv = process.argv[2].indexOf('static') > -1;
+const DIST_BASE_PATH = isStaticEnv ? './build' : '../web/static';
+const MOCK_PATH = '.';
 
 // modules
 gulp.task('sass', () => {
@@ -55,22 +56,33 @@ gulp.task('copy', () => {
     .pipe(gulp.dest(`${DIST_BASE_PATH}/images`));
 });
 
-gulp.task('shell:obelisk', $.shell.task('sh ./obelisk-build.sh'));
+gulp.task('shell:obelisk', $.shell.task('mix obelisk build'));
 
 gulp.task('clean', del.bind(null, [
   `${DIST_BASE_PATH}/images`,
   `${DIST_BASE_PATH}/stylesheets`,
   `${DIST_BASE_PATH}/javascripts`
-]));
+], {
+  force: true
+}));
+
+gulp.task('webserver', () => {
+  gulp.src(DIST_BASE_PATH)
+    .pipe($.webserver({
+      host: 'localhost',
+      port: 8000,
+      livereload: false
+    }));
+});
 
 gulp.task('build', (callback) => {
   runSequence(
     'clean',
+    'shell:obelisk',
     'copy',
     'sprite',
     'sass',
     'webpack',
-    'shell:obelisk',
     callback
   );
 });
@@ -79,12 +91,15 @@ gulp.task('watch', () => {
   gulp.watch(`${FRONTEND_ASSETS_PATH}/javascripts/**/*`, { interval: 500 }, ['webpack']); // eslint
   gulp.watch(`${FRONTEND_ASSETS_PATH}/stylesheets/**/*.scss`, { interval:500 }, ['sass']);
   gulp.watch(`${FRONTEND_ASSETS_PATH}/images/**/*`, { interval:500 }, ['copy', 'sprite']);
-  gulp.watch([`${MOCK_PATH}/pages/**/*`, `${MOCK_PATH}/posts/**/*`, `${MOCK_PATH}/themes/**/*`], { interval:500 }, ['shell:obelisk']);
+
+  if (isStaticEnv) {
+    gulp.watch([`${MOCK_PATH}/pages/**/*`, `${MOCK_PATH}/posts/**/*`, `${MOCK_PATH}/themes/**/*`], { interval:500 }, [/* 'shell:obelisk' */ 'build']);
+  }
 });
 
 // client commands
 gulp.task('serve:static', () => {
-  runSequence('build', 'watch');
+  runSequence('build', 'webserver', 'watch');
 });
 
 gulp.task('serve:app', () => {
