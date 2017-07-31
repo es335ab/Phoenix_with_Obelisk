@@ -12,6 +12,6 @@
       <h1>obeliskaaaaaaaaaaaaaaaaaaaaq</h1>
       <%= @content %>
     </div>
-    <script src="/javascripts/app.js">
+    <script src="/javascripts/app.js"></script>
   </body>
 </html>

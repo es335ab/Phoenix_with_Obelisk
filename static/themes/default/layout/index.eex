@@ -5,6 +5,12 @@
     <hr />
     """
   end %>
+
+  <textarea id="js-editor"></textarea>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.6.4/tinymce.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.6.4/themes/modern/theme.min.js"></script>
+
   <%= @prev %>
   <%= @next %>
 </div>

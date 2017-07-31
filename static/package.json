@@ -35,7 +35,6 @@
     "node-sass": "^4.5.3",
     "react": "^15.6.1",
     "run-sequence": "^1.2.2",
-    "tinymce": "^4.6.4",
     "uglify-js-brunch": "~2.0.1",
     "webpack": "^2.6.1",
     "webpack-stream": "^3.2.0"
