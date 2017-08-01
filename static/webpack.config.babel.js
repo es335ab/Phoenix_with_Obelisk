@@ -19,5 +19,6 @@ module.exports = {
       exclude: /node_modules/,
       loader: 'babel-loader?presets[]=es2015'
     }]
-  }
+  },
+  cache: true
 };
